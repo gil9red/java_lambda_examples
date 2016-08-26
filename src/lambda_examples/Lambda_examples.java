@@ -8,6 +8,8 @@ package lambda_examples;
 import java.util.List;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  *
@@ -70,11 +72,15 @@ public class Lambda_examples {
     }
     
     static void example_3() {
-        List<String> numbers = Arrays.asList("2", "hel", "aorl", "1", "on");
+        List<String> numbers = Arrays.asList("2", "hel", "aorl", "1", "on", "HEl");
         System.out.println(numbers);
         
         // Просто сортировка
         Collections.sort(numbers);
+        System.out.println(numbers);
+        
+        // Сортировка без учета регистра
+        Collections.sort(numbers, String::compareToIgnoreCase);
         System.out.println(numbers);
         
         // Сортировка по длине строк
@@ -84,6 +90,35 @@ public class Lambda_examples {
         // Обратная сортировка по длине строк
         Collections.sort(numbers, (o1, o2) -> Integer.compare(o2.length(), o1.length()));
         System.out.println(numbers);
+    }
+    
+    static void example_4() {
+        class MyString {
+            public MyString(Object value) {
+                obj = value;
+            }
+            
+            private Object obj;
+            
+            @Override
+            public String toString() {
+                return "MyString<" + obj.toString() + ">";
+            }
+        };
+        
+        // List<Integer> -> List<String>
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6);
+        System.out.println(numbers);
+        
+       
+        Stream<String> stream = numbers.stream().map(String::valueOf);
+        List<String> strs = stream.collect(Collectors.toList());
+        System.out.println(strs);
+        
+        // Подставление конструктора объекта
+        Stream<MyString> stream2 = numbers.stream().map(MyString::new);
+        List<MyString> strs2 = stream2.collect(Collectors.toList());
+        System.out.println(strs2);
     }
     
     /**
@@ -97,6 +132,9 @@ public class Lambda_examples {
         System.out.println();
         
         example_3();
+        System.out.println();
+        
+        example_4();
         System.out.println();
     }    
 }
